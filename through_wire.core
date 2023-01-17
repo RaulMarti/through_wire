@@ -1,0 +1,43 @@
+CAPI=2:
+name: ::through_wire:0
+
+filesets:
+  rtl:
+    files:
+      - rtl/through_wire.sv : {file_type : systemVerilogSource}
+
+  tb:
+    files:
+      - tb/tb_through_wire.sv : {file_type : systemVerilogSource}
+
+  basys3:
+    files: [board/through_wire.xdc : {file_type : xdc}] 
+
+
+targets:
+  default: &default
+    filesets:
+      - rtl
+    toplevel: through_wire
+
+  sim:
+    default_tool: xsim
+    filesets : [rtl, tb]
+    toplevel: [tb_through_wire]
+
+  synth:
+    default_tool : vivado
+    filesets : [rtl]
+    tools:
+      vivado:
+        part : xc7a35tcpg236-1
+        pnr : none
+    toplevel : through_wire
+
+  basys3:
+    default_tool : vivado
+    filesets : [rtl, basys3]
+    tools:
+      vivado:
+        part : xc7a35tcpg236-1
+    toplevel : through_wire
